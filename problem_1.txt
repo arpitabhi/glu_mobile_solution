@@ -1,0 +1,51 @@
+# Problem 1: Describe the web flow (as much detail as possible) until the page load is complete when an user enters the following url into the browsers: https://www.amazon.com/Hamilton-Beach-49980A-Programmable-Stainless/dp/B00EI7DPPI
+
+# Solution:
+    Below is the sequence of steps that will occur.
+        1. User Enter the URL in the client/Browerser.
+        2. Browsers sends the web address to the local DNS Server.
+        3. If the local DNS Server is unavailable it will hit the next DNS Server up the hierarchy.
+        4. DNS returns an IP or a Group of shuffled IPs corresponding to the URL.
+        5. Brower hits the IP in waterfall fashion untill the IP responds.
+        6. The IP would corresponds to the IP of the Load Balancer or a Proxy Server or a Gateway.
+        7. Considering it to be a fresh request the load Balancer routes that particular request to a specific application server.
+        9. Application server check the API endpint and then fetch the product details from the DB server.
+        10. Application server catering to the request will process the information and sends back to client.
+        11. Any blob data such as Image or Video would be delivered in the form of a CDN URL.
+        12. Client will hit this CDN URL to get the specific Image or Video.
+
+# Describe what might be the cause(s) if the followings happen when the action above is taken:
+1.  The browser tries to load the page but is not able to complete in 5 minutes or more.
+
+# Solution:
+    There can be multiple reasons for such a slow response.
+        1. Absence of Pagination: Data to be fetch is large and requires pagination to be implimented.
+        2. Request overload : The Application server might be overwhelmed by the number of request incoming.
+        3. Overloaded Flash Memory: The Application servers RAM might be overwhelmed and results in a hung response.
+        4. Inadequet Caching: As the size of the data to be catered to coule be in MBs. There needs to be distinction 
+        while serving the Blob data. Such a Data needs to be served by a much faster Memory and nearer location which means a CDN is to be used.
+
+2.  The page is not found.
+# Solution:
+    There can be below reasons for such a response.
+        1. The Server responsible for the response is not running or is down.
+        2. The API Endpoint is invalid.
+        3. The HTML page which caters to that particular request is missing.
+        4. Absence of redirects
+
+
+It would be great if you can tell us how you would find out the cause, or what tools you would use to find out the causes.
+# Solution:
+    For Slow Response:
+        1. I would first check for any dataset fetch or absence of pagination in such a scenario.
+        2. I would inspects the Servers RAM usage when such a request comes.
+        3. I would running performance testing or load testing to check the performance.
+        4. If there is any Image or Blob Data that needs to be catered are served from the primary storage than would
+            suggest to make use of CDN depending on the cost viability.
+    
+    For Page not found:
+        1. I would check if the Endpoint given is correct.
+        2. Check if the particular html page is not misplaced.
+        3. I would check if proper redirects are implimented or not.
+
+        

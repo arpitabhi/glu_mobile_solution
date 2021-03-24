@@ -1,0 +1,55 @@
+
+-- Problem 3: Assuming our company (Glu Mobile, Inc) has tree-like employee structure, for example,
+
+-- CEO
+--   VP of Engineering
+--     Director of Engineering
+--       Studio A
+--         Manager A of Testing
+--           Team A
+--             Group A
+--             Group B
+--             Group C
+--           Team B
+--           Team C
+--         Manager B of Development
+--           Team A
+--           Team B
+--           Team C
+--         Manager C of QA
+--           Team A
+--           Team B
+--           Team C
+--       Studio B
+--         Manager A of Testing
+--           Team A
+--             Group A
+--             Group B
+--             Group C
+--           Team B
+--           Team C
+--         Manager B of Development
+--           Team A
+--           Team B
+--           Team C
+--         Manager C of QA
+--           Team A
+--           Team B
+--           Team C
+--   VP of Marketing
+--   VP of Product
+--   VP of Finance
+--   VP of Accounting
+--   VP of Human Resource
+-- Notice that some of the department won’t have such detailed structure as Engineering. It might be just having Manager(s) only.
+
+-- We would like to create some database tables to store employee data reflecting such organizational structure. Using MySQL database as the storage of data source. Please do the following:
+
+-- a.  Create database table(s) to reflect such a structure.
+-- b.  Count how many employees are in their own department under each of VPs.
+-- c.  List all departments that just have the managers only.
+-- d.  Assuming we have the salary column for the employee table, write a query to fetch all employees’ first name and last name who have salary over $80000.
+-- e.  Assuming we also have hiring date for the employee table, write a query to list out each unique hiring date with how many total company employees on that date. (hiring_date, total_employees)
+-- f.  This is the bonus question. Assuming we have more than 100k+ employees and so many groups, sometimes, reorganizing may happen. Write the query to reflect the following actions:
+-- a.  What if the employees under the Team A of Manager B in Development under Studio A were laid off?
+-- b.  What if We need to add employees to form a Team D to Manager B of Development under Studio B, assuming Team D would be the node after Team C?
