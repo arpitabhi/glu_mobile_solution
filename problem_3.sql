@@ -64,9 +64,11 @@ CREATE TABLE employees (
     last_name   VARCHAR(16)     NOT NULL,
     gender      ENUM ('M','F')  NOT NULL,  -- Enumeration of either 'M' or 'F'  
     hire_date   DATE            NOT NULL,
-    PRIMARY KEY (emp_no)                   -- Index built automatically on primary-key column
+    manager_no  INT             NOT NULL,
+    PRIMARY KEY (emp_no),                   -- Index built automatically on primary-key column
                                            -- INDEX (first_name)
                                            -- INDEX (last_name)
+    FOREIGN KEY (manager_no) REFERENCES employees (emp_no) ON DELETE CASCADE
 );
 
 CREATE TABLE departments (
@@ -199,4 +201,5 @@ ORDER BY hire_date ASC
 --     assuming Team D would be the node after Team C?
 
 -- Solution 3.f.b
---              
+--              Since here we make use of recursive relationship between employees and Manager.
+--              We can add any team with the same Manager.

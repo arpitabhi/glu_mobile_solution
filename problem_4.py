@@ -6,3 +6,20 @@
 # Hint: You can use nginx as web server and either php7 or python3 as the programing language for the application. Attach the document that instructs how to install the web server, exact php version and python version and MySQL server version and where to put your code to the system. Or you can provide such code and the instruction via GitHub so we can download it from there.
 
 
+import requests
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+async def root():
+    return {"Hello": "API"}
+
+
+@app.get("/domain/{domain}")
+async def get_domain(domain: str):
+    response = requests.get("http://ip-api.com/json/" + domain)
+    return response.json()
+
+
