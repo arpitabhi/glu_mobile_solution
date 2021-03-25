@@ -43,7 +43,8 @@
 --   VP of Human Resource
 -- Notice that some of the department won’t have such detailed structure as Engineering. It might be just having Manager(s) only.
 
--- We would like to create some database tables to store employee data reflecting such organizational structure. Using MySQL database as the storage of data source. Please do the following:
+-- We would like to create some database tables to store employee data reflecting such organizational structure. 
+-- Using MySQL database as the storage of data source. Please do the following:
 
 -- a.  Create database table(s) to reflect such a structure.
 -- Solution 3.a - 
@@ -135,18 +136,67 @@ CREATE TABLE salaries (
 -- b.  Count how many employees are in their own department under each of VPs.
 
 -- Solution 3.b
-SELECT DEP.dept_name AS 'Department_Name',EMP.Number_of_Employees FROM departments DEP
-INNER JOIN (SELECT COUNT(emp_no) AS 'Number_of_Employees', dept_no FROM dept_emp GROUP BY dept_no) EMP
-ON DEP.dept_no = EMP.dept_no
+SELECT NAME1.first_name1 AS 'VP First Name',NAME1.last_name1 AS 'VP Last Name',COUNT_NO.Number1 AS 'Number of Employees Under VP' FROM 
 
-SELECT dept_no FROM dept_emp DEPART
-INNER JOIN (SELECT emp_no FROM titles WHERE title LIKE 'VP %') VPEMP
-ON DEPART.emp_no=VPEMP.emp_no
+(SELECT DEP.dept_no AS dept_no1,EMP.Number_of_Employees AS Number1 FROM departments DEP
+INNER JOIN (SELECT COUNT(emp_no) AS 'Number_of_Employees', dept_no FROM dept_emp GROUP BY dept_no) EMP
+ON DEP.dept_no = EMP.dept_no) COUNT_NO
+
+INNER JOIN 
+
+(SELECT VP_NAME.dept_no AS dept_no2,VP_NAME.first_name AS first_name1,VP_NAME.last_name AS last_name1 FROM dept_emp DEPART1
+INNER JOIN (SELECT emp_no,first_name,last_name FROM employees
+WHERE emp_no IN (SELECT emp_no FROM titles WHERE title LIKE 'VP %')) VP_NAME
+ON DEPART1.emp_no=VP_NAME.emp_no) NAME1
+
+ON COUNT_NO.dept_no1 = NAME1.dept_no2
 
 
 -- c.  List all departments that just have the managers only.
--- d.  Assuming we have the salary column for the employee table, write a query to fetch all employees’ first name and last name who have salary over $80000.
--- e.  Assuming we also have hiring date for the employee table, write a query to list out each unique hiring date with how many total company employees on that date. (hiring_date, total_employees)
--- f.  This is the bonus question. Assuming we have more than 100k+ employees and so many groups, sometimes, reorganizing may happen. Write the query to reflect the following actions:
+-- Solution 3.c
+
+SELECT dept_name AS 'Department with Only Managers' FROM departments
+WHERE dept_no NOT IN
+                    (SELECT DISTINCT(dept_no) FROM dept_emp
+                    WHERE
+                    emp_no IN (SELECT emp_no FROM titles WHERE title NOT IN ('VP%','%Manager%')))
+
+
+
+-- d.  Assuming we have the salary column for the employee table, write a query to fetch all employees’ 
+-- first name and last name who have salary over $80000.
+-- Solution 3.d
+
+SELECT EMP.first_name, EMP.last_name FROM employees EMP
+INNER JOIN salaries SAL
+ON SAL.emp_no=EMP.emp_no
+WHERE SAL.salary>80000 
+
+-- e.  Assuming we also have hiring date for the employee table, write a query to list out each 
+-- unique hiring date with how many total company employees on that date. (hiring_date, total_employees)
+-- Solution 3.e
+
+SELECT hire_date,COUNT(emp_no) AS 'Number of Employee' FROM employee
+GROUP BY hire_date
+ORDER BY hire_date ASC
+
+
+-- f.  This is the bonus question. Assuming we have more than 100k+ employees and so many 
+-- groups, sometimes, reorganizing may happen. Write the query to reflect the following actions:
 -- a.  What if the employees under the Team A of Manager B in Development under Studio A were laid off?
--- b.  What if We need to add employees to form a Team D to Manager B of Development under Studio B, assuming Team D would be the node after Team C?
+
+-- Solution 3.f.a
+--              Since we have manitained a parent-child relationship amoung employees- department ,
+--              employee-dept_emp, employee-dept-manager, employee-title, employee-salaries tables
+--              If an employee is laid off we can simply delete the emp_no corresponding to the particular employee
+--              Since we have put the Foreign key mapping with Delete cascade on all the details related to that employee 
+--              would be automatically be deleted.
+--              
+
+
+
+-- b.  What if We need to add employees to form a Team D to Manager B of Development under Studio B, 
+--     assuming Team D would be the node after Team C?
+
+-- Solution 3.f.b
+--              
