@@ -56,7 +56,9 @@
 --          5. titles(emp_no(FK),title,from_date,to_date,emp_no+title+from_date(PK))
 --          6. salaries(emp_no(FK),salary,from_date,to_date,emp_no+from_date(PK))
 
+CREATE DATABASE glu_mobile_org
 
+USE glu_mobile_org
 CREATE TABLE employees (
     emp_no      INT             NOT NULL,  -- UNSIGNED AUTO_INCREMENT??
     birth_date  DATE            NOT NULL,
